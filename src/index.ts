@@ -17,7 +17,7 @@ const importTypeMap: Record<
   },
   jpg: {
     filenameFilter: (filename: string) => /\.jpg$/.test(filename),
-  }
+  },
 };
 
 const batch = async ({
@@ -38,11 +38,13 @@ const batch = async ({
 };
 
 (async () => {
-  console.log(BASE_DIR, readdirSync(BASE_DIR))
+  console.log(BASE_DIR, readdirSync(BASE_DIR));
   const sourceImages = readdirSync(BASE_DIR).filter(
-    importTypeMap[IMPORT_TYPE]?.filenameFilter
+    importTypeMap[IMPORT_TYPE]?.filenameFilter,
   );
-  const dirnames = sourceImages.map((filename) => filename.slice(0, -(IMPORT_TYPE.length + 1)));
+  const dirnames = sourceImages.map((filename) =>
+    filename.slice(0, -(IMPORT_TYPE.length + 1)),
+  );
   await Promise.all(dirnames.map((dirname) => mkdirp(join(BASE_DIR, dirname))));
   await batch({
     arr: sourceImages.slice(OFFSET).filter((img) => !SKIP.includes(img)),
@@ -56,7 +58,7 @@ const batch = async ({
             .clone()
             .resize({ width })
             .webp()
-            .toFile(join(BASE_DIR, `${basename}`, `${width}.webp`))
+            .toFile(join(BASE_DIR, `${basename}`, `${width}.webp`)),
         );
       }),
   });
